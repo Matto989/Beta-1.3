@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Ich mag Dich</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:linear-gradient(to bottom,#001f3f,#0074D9);
+    color:white;
+    text-align:center;
+    overflow:hidden;
+}
+
+#rainLayer{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+h1{margin-top:50px;}
+#countdown{font-size:2em;margin-top:20px;}
+
+#passwordSection,#letter{
+    display:none;
+    margin-top:40px;
+}
+
+input{
+    padding:10px;
+    border-radius:8px;
+    border:none;
+    text-align:center;
+}
+
+button{
+    padding:8px 15px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+#letter{
+    width:85%;
+    max-width:700px;
+    margin:40px auto;
+    background:rgba(255,255,255,0.1);
+    padding:25px;
+    border-radius:15px;
+    line-height:1.6em;
+}
+
+.stitch {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  position: absolute;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-100px); }
+  100% { transform: translateY(110vh); }
+}
+</style>
+</head>
+
+<body>
+
+<div id="rainLayer"></div>
+
+<h1>Ich habe dich nicht vergessen 💫</h1>
+<div id="countdown"></div>
+
+<div id="passwordSection">
+    <h2>Gib den Code ein 🔐</h2>
+    <input type="password" id="passwordInput" placeholder="Code">
+    <br>
+    <button onclick="checkPassword()">Öffnen</button>
+    <br>
+    <button onclick="hilfe()">Hilfe</button>
+    <p id="hint"></p>
+</div>
+
+<div id="letter">
+    <h2>Ich mag Dich</h2>
+
+    <p>
+Hi Tuana,<br><br>
+
+Zwei Wochen sind jetzt vergangen und ich habe dich immer noch nicht vergessen.
+Ich finde dich und deinen Verstand wirklich interessant und geheimnisvoll.
+Ehrlich gesagt würde ich dich sehr gerne besser kennenlernen und mehr mit dir reden,
+weil es mir großen Spaß macht, mich mit dir zu unterhalten und Gedanken auszutauschen.<br><br>
+
+Leider ist das bei der Arbeit etwas schwierig, da ich dich wegen den anderen Leuten
+nicht in Verlegenheit bringen möchte. Deshalb habe ich die Wette beim Billard gestartet:
+<br><br>
+
+A) um dich ohne unnötiges Risiko besser kennenzulernen und<br>
+B) weil ich immer Spaß mit dir habe<br><br>
+
+Ich weiß nicht, ob die Wette für dich noch gilt oder nicht (wäre cool wenn ja),
+aber ich wollte dir das einfach mitteilen.<br><br>
+
+Falls du Lust hast,
+<br><br>
+
+<a href="tel:017636635086"
+style="color:#4da6ff;font-weight:bold;text-decoration:none;">
+hier mein Kontakt
+</a>
+
+<br><br>
+
+Falls du dich nicht meldest, habe ich meine Antwort.<br><br>
+
+Ich wünsche dir einen schönen Tag.<br><br>
+
+Mit freundlichen Grüßen<br>
+Mattia
+    </p>
+</div>
+
+<!-- MUSIC -->
+<audio id="music" loop>
+  <source src="Unforgettable.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+// COUNTDOWN fino al 22 Feb 2026 ore 17:55
+const targetDate = new Date("February 22, 2026 17:55:00").getTime();
+const countdownElement = document.getElementById("countdown");
+const passwordSection = document.getElementById("passwordSection");
+
+const interval = setInterval(function(){
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    if(distance <= 0){
+        clearInterval(interval);
+        countdownElement.style.display="none";
+        passwordSection.style.display="block";
+    } else {
+        const days = Math.floor(distance/(1000*60*60*24));
+        const hours = Math.floor((distance/(1000*60*60))%24);
+        const minutes = Math.floor((distance/(1000*60))%60);
+        const seconds = Math.floor((distance/1000)%60);
+
+        countdownElement.innerHTML =
+        days+"d "+hours+"h "+minutes+"m "+seconds+"s";
+    }
+},1000);
+
+// PASSWORD 131225
+function checkPassword(){
+    const password=document.getElementById("passwordInput").value;
+    if(password==="131225"){
+        passwordSection.style.display="none";
+        document.getElementById("letter").style.display="block";
+
+        const music = document.getElementById("music");
+        music.play().catch(error => {
+            console.log("Autoplay bloccato:", error);
+        });
+
+    }else{
+        alert("Falscher Code 💔");
+    }
+}
+
+// HILFE
+function hilfe(){
+    document.getElementById("hint").innerHTML=
+    "💡 der Datum ist dem aus der eine Abend (Firmenfeier)";
+}
+
+// STITCH RAIN
+function createStitch(){
+    const stitch=document.createElement("div");
+    stitch.classList.add("stitch");
+    stitch.innerHTML= '<img src="stitch head png.jpg" class="stitch">';
+    stitch.style.left=Math.random()*100+"vw";
+    stitch.style.animationDuration=(3+Math.random()*5)+"s";
+
+    document.getElementById("rainLayer").appendChild(stitch);
+
+    setTimeout(()=>{stitch.remove();},8000);
+}
+
+setInterval(createStitch,500);
+
+</script>
+
+</body>
+</html>
